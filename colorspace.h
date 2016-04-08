@@ -106,6 +106,8 @@ double adjustTo1Weber3(double array[])
 
 	double totalValue = value1 + value2 + value3;
 
+	
+
 	value1 = value1 / totalValue;
 	value2 = value2 / totalValue;
 	value3 = value3 / totalValue;
@@ -428,6 +430,103 @@ float colorDepthExpand(float *imageArray, int imageWidth, int imageHeight, float
 
 	return *imageArray;
 }
+
+//work in progress
+float imageLevels(float *imageArray, int imageWidth, int imageHeight, float gamma)
+{
+/*
+outPixel = (pow(((inPixel * 255.0) - inBlack) / (inWhite - inBlack),
+                inGamma) * (outWhite - outBlack) + outBlack) / 255.0;*/
+
+	float minRed = 1.0;
+	float minGreen = 1.0;
+	float minBlue = 1.0;
+	float maxRed = 0.0;
+	float maxGreen = 0.0;
+	float maxBlue = 0.0;
+
+	float midRed = 0;
+	float midGreen = 0;
+	float midBlue = 0;
+
+	for (int x = 0; x < imageWidth; x++)
+	{
+		for (int y = 0; y < imageHeight; y++)
+		{
+			int nIdx = x * 4 + y * 4 * imageWidth;
+
+			float red = imageArray[nIdx + CHANNEL_R];
+			float green = imageArray[nIdx + CHANNEL_G];
+			float blue = imageArray[nIdx + CHANNEL_B];
+
+			if (red > maxRed) maxRed = red;
+			if (red < minRed) minRed = red;
+			if (green > maxGreen) maxGreen = green;
+			if (green < minGreen) minGreen = green;
+			if (blue > maxBlue) maxBlue = blue;
+			if (blue < minBlue) minBlue = blue;
+
+		}
+	}
+
+	midRed = (minRed + maxRed) / 2;
+	midGreen = (minGreen + maxGreen) / 2;
+	midBlue = (minBlue + maxBlue) / 2;
+
+
+	for (int x = 0; x < imageWidth; x++)
+	{
+		for (int y = 0; y < imageHeight; y++)
+			{
+				int nIdx = x * 4 + y * 4 * imageWidth;
+
+				float red = imageArray[nIdx + CHANNEL_R];
+				float green = imageArray[nIdx + CHANNEL_G];
+				float blue = imageArray[nIdx + CHANNEL_B];
+
+				float red2 = (pow(((red * 1.0) - minRed) / (maxRed - minRed), gamma) * (1.0 - 0) + 0) / 1.0;
+				float green2 = (pow(((green * 1.0) - minGreen) / (maxGreen - minGreen), gamma) * (1.0 - 0) + 0) / 1.0;
+				float blue2 = (pow(((blue * 1.0) - minBlue) / (maxBlue - minBlue), gamma) * (1.0 - 0) + 0) / 1.0;
+
+				//outPixel = (pow(((inPixel * 255.0) - inBlack) / (inWhite - inBlack), inGamma) * (outWhite - outBlack) + outBlack) / 255.0;
+
+
+				imageArray[nIdx + CHANNEL_R] = (red2);
+				imageArray[nIdx + CHANNEL_G] = (green2);
+				imageArray[nIdx + CHANNEL_B] = (blue2);
+			}//end x
+		}//end y
+
+	return *imageArray;
+}
+
+float normalizeImage(float *imageArray, int imageWidth, int imageHeight, float minData, float maxData)
+{
+	for (int x = 0; x < imageWidth; x++)
+	{
+		for (int y = 0; y < imageHeight; y++)
+			{
+				int nIdx = x * 4 + y * 4 * imageWidth;
+
+				float red = imageArray[nIdx + CHANNEL_R];
+				float green = imageArray[nIdx + CHANNEL_G];
+				float blue = imageArray[nIdx + CHANNEL_B];
+
+				red = red - minData / maxData - minData;
+				green = green - minData / maxData - minData;
+				blue = blue - minData / maxData - minData;
+
+
+				imageArray[nIdx + CHANNEL_R] = (red);
+				imageArray[nIdx + CHANNEL_G] = (green);
+				imageArray[nIdx + CHANNEL_B] = (blue);
+			}//end x
+		}//end y
+
+	return *imageArray;
+}
+
+
 
 /// <summary>Extract a single or all color channels.
 /// <para>*imageArray = image array to be expanded.</para>

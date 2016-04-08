@@ -729,9 +729,9 @@ float LaPlacian3x3FourNeighbors(float *inputArray, int ImageWidth, int ImageHeig
 			float green = gg1 + gg2 + gg3 + gg4 + gg5 + gg6 + gg7 + gg8 + gg9;
 			float blue = bb1 + bb2 + bb3 + bb4 + bb5 + bb6 + bb7 + bb8 + bb9;
 			
-			tempArray[nIdx5 + CHANNEL_R] = red;
-			tempArray[nIdx5 + CHANNEL_G] = green;
-			tempArray[nIdx5 + CHANNEL_B] = blue;
+			tempArray[nIdx5 + CHANNEL_R] = abs(red);
+			tempArray[nIdx5 + CHANNEL_G] = abs(green);
+			tempArray[nIdx5 + CHANNEL_B] = abs(blue);
 			
 		}
 	}
