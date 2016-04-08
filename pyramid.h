@@ -157,22 +157,23 @@ float copyImageToBottomPyramidLevel(float *copyFromImage, int copyFromImageWidth
 float copyImageToOriginalSize(float *copyFromImage, int copyFromImageWidth, int copyFromImageHeight, float *copyToImage, int copyToImageWidth, int copyToImageHeight)
 {
 	char sBuffer6[400];
-	/*
-	sprintf(sBuffer6,"copyFromImageWidth = %d\n copyFromImageHeight = %d\n\n copyToImageWidth = %d\n copyToImageHeight = %d\n\n "
+	
+	/*sprintf(sBuffer6,"copyFromImageWidth = %d\n copyFromImageHeight = %d\n\n copyToImageWidth = %d\n copyToImageHeight = %d\n\n "
 			         ,copyFromImageWidth,       copyFromImageHeight,         copyToImageWidth,       copyToImageHeight);
-	MessageBox(NULL,sBuffer6,"Image Resolutions", MB_OK);
-	*/
+	MessageBox(NULL,sBuffer6,"Image Resolutions", MB_OK);*/
+	
 
 	//lady looking up 224x * 223y
 	//color cat  128x *171y
 
-	for (int x = 0; x < copyToImageWidth; x++)
+
+	//PROBLEM HERE
+/*	for (int x = 0; x < copyToImageWidth; x++)
 	{
 		for (int y = 0; y < copyToImageHeight; y++)
 		{
-			int nIdx2 = x * 4 + y * 4 * copyToImageWidth;
 			int nIdx1 = x * 4 + y * 4 * copyFromImageWidth;
-			
+			int nIdx2 = x * 4 + y * 4 * copyToImageWidth;
 
 			float red = copyFromImage[nIdx1 + CHANNEL_R];
 			float green = copyFromImage[nIdx1 + CHANNEL_G];
@@ -183,7 +184,33 @@ float copyImageToOriginalSize(float *copyFromImage, int copyFromImageWidth, int 
 			copyToImage[nIdx2 + CHANNEL_G] = green;
 			copyToImage[nIdx2 + CHANNEL_B] = blue;
 
-			//sprintf(sBuffer6,"y = %d\n " ,y);
+			sprintf(sBuffer6,"y = %d\n\n copyFromImageWidth = %d\n copyToImageWidth = %d\n" ,y,copyFromImageWidth,copyToImageWidth);
+			MessageBox(NULL,sBuffer6,"Y loop = 171 = height", MB_OK);
+
+		}//end y
+
+		//sprintf(sBuffer6,"x = %d\n " ,x);
+		//MessageBox(NULL,sBuffer6,"X loop = 128 = width", MB_OK);
+
+	}//end x*/
+
+	for (int x = 0; x < copyFromImageWidth; x++)
+	{
+		for (int y = 0; y < copyFromImageHeight; y++)
+		{
+			int nIdx1 = x * 4 + y * 4 * copyFromImageWidth;
+			int nIdx2 = x * 4 + y * 4 * copyToImageWidth;
+
+			float red = copyFromImage[nIdx1 + CHANNEL_R];
+			float green = copyFromImage[nIdx1 + CHANNEL_G];
+			float blue = copyFromImage[nIdx1 + CHANNEL_B];
+
+
+			copyToImage[nIdx2 + CHANNEL_R] = red;
+			copyToImage[nIdx2 + CHANNEL_G] = green;
+			copyToImage[nIdx2 + CHANNEL_B] = blue;
+
+			//sprintf(sBuffer6,"y = %d\n\n copyFromImageWidth = %d\n copyToImageWidth = %d\n" ,y,copyFromImageWidth,copyToImageWidth);
 			//MessageBox(NULL,sBuffer6,"Y loop = 171 = height", MB_OK);
 
 		}//end y
@@ -803,9 +830,9 @@ float gaussianReducepyramid(float *largerPyramidLevelArray, int largerPyramidLev
 				float green = largerPyramidLevelArray[nIdx2 + CHANNEL_G];
 				float blue = largerPyramidLevelArray[nIdx2 + CHANNEL_B];
 
-				//sprintf(sBuffer6,"x = %d\n y = %d\n\n xx = %d\n yy = %d\n\n largerPyramidLevelWidth = %d\n largerPyramidLevelHeight = %d\n\n smallerPyramidLevelWidth = %d\n smallerPyramidLevelHeight = %d"
-				//                 ,x,       y,         xx,       yy,         largerPyramidLevelWidth,       largerPyramidLevelHeight,         smallerPyramidLevelWidth,       smallerPyramidLevelHeight);
-				//MessageBox(NULL,sBuffer6,"X and Y", MB_OK);
+				/*sprintf(sBuffer6,"red = %f\n\n x = %d\n y = %d\n\n xx = %d\n yy = %d\n\n largerPyramidLevelWidth = %d\n largerPyramidLevelHeight = %d\n\n smallerPyramidLevelWidth = %d\n smallerPyramidLevelHeight = %d"
+				                 ,red,         x,       y,         xx,       yy,         largerPyramidLevelWidth,       largerPyramidLevelHeight,         smallerPyramidLevelWidth,       smallerPyramidLevelHeight);
+				MessageBox(NULL,sBuffer6,"X and Y", MB_OK);*/
 
 				smallerPyramidLevelArray[nIdx1 + CHANNEL_R] = red;
 				smallerPyramidLevelArray[nIdx1 + CHANNEL_G] = green;
@@ -813,39 +840,19 @@ float gaussianReducepyramid(float *largerPyramidLevelArray, int largerPyramidLev
 			}
 		}
 	}
-	
 
 
 
-
-	/*
-	for(int x = 0; x < smallerPyramidLevelWidth; x++)// scan the larger image width
-	{
-		for(int y = 0; y < smallerPyramidLevelHeight; y++)// scan the larger image height
-		{
-			int nIdx = x * 4 + y * 4 * smallerPyramidLevelWidth; //center
-
-			float red = smallerPyramidLevelArray[nIdx + CHANNEL_R];
-			float green = smallerPyramidLevelArray[nIdx + CHANNEL_R];
-			float blue = smallerPyramidLevelArray[nIdx + CHANNEL_R];
-			
-			//sprintf(sBuffer6,"x = %d\n y = %d\n\n red = %f\n\n smallerPyramidLevelWidth = %d\n smallerPyramidLevelHeight = %d"
-			//                 ,x,       y,         red,         smallerPyramidLevelWidth,       smallerPyramidLevelHeight);
-			//MessageBox(NULL,sBuffer6,"X and Y", MB_OK);
-		}
-	}
-	*/
-
-
-
-	//printArray(smallerPyramidLevelArray, smallerPyramidLevelWidth, smallerPyramidLevelHeight);
+	/*sprintf(sBuffer6,"largerPyramidLevelWidth = %d\n largerPyramidLevelHeight = %d\n\n smallerPyramidLevelWidth = %d\n smallerPyramidLevelHeight = %d",
+			          largerPyramidLevelWidth,       largerPyramidLevelHeight,         smallerPyramidLevelWidth,       smallerPyramidLevelHeight);
+	MessageBox(NULL,sBuffer6,"Dimensions", MB_OK);*/
 
 	//sprintf(sBuffer6,"HALT");MessageBox(NULL,sBuffer6,"stop", MB_OK);
 
 	//return *largerPyramidLevelArray;
-	return *smallerPyramidLevelArray;
+	//return *smallerPyramidLevelArray;
 
-	//return 0;
+	return 0;
 }
 
 
